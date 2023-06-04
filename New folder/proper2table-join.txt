@@ -1,0 +1,15 @@
+$query = Projects::find()
+    ->select('projects.*,epics_list.*')  // make sure same column name not there in both table
+    ->leftJoin('epics_list', 'projects.uniqueid = epics_list.projectlist1')
+    // ->where(['admins.idadm' => 33])
+    // ->with('epics_list')
+    ->asArray()
+    ->all();
+
+    echo '<pre>';
+
+        print_r($query);
+        die;
+   return $this->render('index', [
+            'dataProvider' => $dataProvider,
+        ]);

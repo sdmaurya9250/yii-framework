@@ -30,6 +30,7 @@ class Video extends \yii\db\ActiveRecord
             [['video_id', 'title'], 'required'],
             [['video_id'], 'string', 'max' => 16],
             [['title'], 'string', 'max' => 50],
+            [['description'], 'string', 'max' => 50],
         ];
     }
 
@@ -42,6 +43,7 @@ class Video extends \yii\db\ActiveRecord
             'id' => 'ID',
             'video_id' => 'Video ID',
             'title' => 'Title',
+            'description' => 'Description',
         ];
     }
 

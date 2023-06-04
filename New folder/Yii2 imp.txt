@@ -1,0 +1,19 @@
+
+
+Add serial column in table
+
+  'columns' => [
+            ['class' => 'yii\grid\SerialColumn'],
+
+            'id',
+            'video_id',
+            'title',
+
+// Action column in tables
+            [
+                'class' => ActionColumn::className(),
+                'urlCreator' => function ($action, Video $model, $key, $index, $column) {
+                    return Url::toRoute([$action, 'id' => $model->id]);
+                 }
+            ],
+        ],

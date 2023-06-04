@@ -1,0 +1,517 @@
+https://github.com/yiisoft/yii2-app-advanced/blob/master/docs/guide/start-installation.md
+
+https://www.yiiframework.com/doc/guide/2.0/en/input-forms
+
+
+SELECT projects.id,projects.customer_contact,projects.uniqueid,projects.customer_address,projects.project_name,epics_list.title FROM `projects` LEFT JOIN epics_list ON projects.uniqueid = epics_list.projectlist1;
+
+
+SELECT * FROM `projects` INNER JOIN epics_list ON projects.uniqueid = epics_list.projectlist1;
+
+$dataProvider = new ActiveDataProvider([
+            'query' => Video::find(),
+            /*
+            'pagination' => [
+                'pageSize' => 50
+            ],
+            'sort' => [
+                'defaultOrder' => [
+                    'id' => SORT_DESC,
+                ]
+            ],
+            */
+        ]);
+
+        
+    echo '<pre>';
+    // print_r($dataProvider);
+
+    $posts = $dataProvider->getModels();
+
+    var_dump( $posts) ;
+
+    die;
+
+
+   // [
+            //     'class' => ActionColumn::className(),
+            //     'urlCreator' => function ($action, $model, $key, $index) {
+            //         if ($model instanceof \common\models\Video) {
+            //             return Url::toRoute([$action, 'id' => $model->id]);
+            //         }
+            //         return '#';
+            //     }
+            // ],
+
+            [
+                'class' => ActionColumn::className(),
+                'urlCreator' => function ($action, $model, $key, $index) {
+                    if ($model instanceof common\models\Video) {
+                        return Url::toRoute([$action, 'id' => $model->id]);
+                    }
+                }
+            ],
+
+
+second option
+
+
+use yii\helpers\VarDumper;
+
+     $dataProvider = new ActiveDataProvider([
+            'query' => Video::find(),
+        
+        ]);
+
+
+  $data = VarDumper::dumpAsString($dataProvider->getModels());
+
+और
+
+  $data =VarDumper::dump($dataProvider->models, 10, true);
+    
+    // var_dump($dataProvider->createCommand()->getRawSql());
+    var_dump($data ) ;
+
+    die;
+
+
+
+
+
+
+
+
+
+
+Debug
+
+   var_dump($postData); // or print_r($postData);
+
+
+After installing framework.
+
+php init
+
+php yii migrate
+
+
+php yii migrate/create create_videos_table --fields="video_id:string(16):notNull,title:string(50):notNull"
+
+http://localhost/yii-application/backend/web/index.php?r=site%2Flogin
+
+
+http://localhost/yii-application/backend/web/site/index
+
+
+studio.surendra.test
+surendra.test
+
+
+Controller view
+			    Controller firstletter   index is controller function name
+http://studio.surendra.test/hello/index
+
+
+
+php yii
+
+Migration 
+php yii migrate/create create_videos_table
+
+php yii migrate/create create_videos_table --fields="video_id:string(16):notNull,title:string(50):notNull"
+
+
+Generte model
+
+http://studio.surendra.test/gii
+
+
+
+
+
+$query = Post::find()->where(['status' => 1]);
+
+$provider = new ActiveDataProvider([
+    'query' => $query,
+    'pagination' => [
+        'pageSize' => 10,
+    ],
+    'sort' => [
+        'defaultOrder' => [
+            'created_at' => SORT_DESC,
+            'title' => SORT_ASC, 
+        ]
+    ],
+]);
+
+
+
+use yii\data\ActiveDataProvider;
+
+$query = Post::find()->where(['status' => 1]);
+
+$provider = new ActiveDataProvider([
+    'query' => $query,
+]);
+
+// returns an array of Post objects
+$posts = $provider->getModels();
+
+// returns the primary key values corresponding to $posts
+$ids = $provider->getKeys();
+
+
+
+
+use app\models\Post;
+
+// Fetching all posts as an array
+$posts = Post::find()->asArray()->all();
+
+// Fetching posts with conditions
+$posts = Post::find()
+    ->where(['status' => 'published'])
+    ->orderBy('created_at')
+    ->asArray()
+    ->all();
+
+// Fetching a single post by ID
+$post = Post::find()
+    ->where(['id' => $postId])
+    ->asArray()
+    ->one();
+
+
+
+
+use yii\db\Query;
+
+// Fetching all posts as an array
+$posts = (new Query())
+    ->select('*')
+    ->from('post')
+    ->all();
+
+// Fetching posts with conditions
+$posts = (new Query())
+    ->select('*')
+    ->from('post')
+    ->where(['status' => 'published'])
+    ->orderBy('created_at')
+    ->all();
+
+// Fetching a single post by ID
+$post = (new Query())
+    ->select('*')
+    ->from('post')
+    ->where(['id' => $postId])
+    ->one();
+
+
+ public function actionIndex()
+    {
+
+
+        $users =  Video::find()->all();
+        // print_r( $posts );
+     // Convert the Active Record models to an array
+$userArray = \yii\helpers\ArrayHelper::toArray($users);
+
+// Debug the fetched data
+Yii::debug($userArray, 'app');
+
+        // use app\models\Post;
+
+        // // Fetching all posts as an array
+        // $posts = Post::find()->asArray()->all();
+        
+        // // Fetching posts with conditions
+        // $posts = Post::find()
+        //     ->where(['status' => 'published'])
+        //     ->orderBy('created_at')
+        //     ->asArray()
+        //     ->all();
+        
+        // // Fetching a single post by ID
+        // $post = Post::find()
+        //     ->where(['id' => $postId])
+        //     ->asArray()
+        //     ->one();
+        
+
+
+        // $dataProvider = new ActiveDataProvider([
+        //     'query' => Video::find(),
+        //     /*
+        //     'pagination' => [
+        //         'pageSize' => 50
+        //     ],
+        //     'sort' => [
+        //         'defaultOrder' => [
+        //             'id' => SORT_DESC,
+        //         ]
+        //     ],
+        //     */
+        // ]);
+
+        // $posts = $dataProvider->getModels();
+        // $count = $dataProvider->getCount();
+        // $count = $dataProvider->getTotalCount();
+
+        // echo '<pre>';
+        // echo $count;
+        // print_r( $count);
+
+        // return $this->render('index', [
+        //     'dataProvider' => $dataProvider,
+        // ]);
+    }
+
+
+Yii2 fetch data and pass to view code with examples
+use app\models\Post;
+use yii\web\Controller;
+
+class SiteController extends Controller
+{
+    public function actionIndex()
+    {
+        $posts = Post::find()->all();
+
+        return $this->render('index', ['posts' => $posts]);
+    }
+}
+
+<?php
+use yii\helpers\Html;
+
+foreach ($posts as $post) {
+    echo Html::encode($post->title);
+    echo "<br>";
+    echo Html::encode($post->content);
+    echo "<br><br>";
+}
+?>
+<!-- index.php -->
+
+<!-- Assuming you want to display a list of user names -->
+<h1>User List</h1>
+
+<ul>
+    <?php foreach ($users as $user): ?>
+        <li><?= $user->name ?></li>
+    <?php endforeach; ?>
+</ul>
+
+
+Yii2 update data  code with examples
+
+// Assuming you have a model called "Post" with attributes "id" and "title"
+
+// Fetch the model instance
+$post = Post::findOne($id); // $id is the ID of the post you want to update
+
+if ($post) {
+    // Assign new values to the model attributes
+    $post->title = 'New Title';
+
+    // Save the model to update the data in the database
+    if ($post->save()) {
+        // Data updated successfully
+        echo 'Data updated successfully.';
+    } else {
+        // Failed to update data
+        $errors = $post->getErrors();
+        // Handle the errors appropriately
+    }
+} else {
+    // Model not found
+    echo 'Post not found.';
+}
+
+
+Yii2 redirect page  after deleting record code with examples
+public function actionDelete($id)
+{
+    $model = YourModel::findOne($id);
+    
+    if (!$model) {
+        throw new NotFoundHttpException('The requested page does not exist.');
+    }
+    
+    $model->delete();
+    
+    return $this->redirect(['index']); // Redirect to the index page after deletion
+}
+
+
+
+
+
+
+
+
+
+
+
+
+Yii2 form how it work code with examples
+ChatGPT
+Yii2 is a popular PHP framework that provides a robust set of tools for building web applications. One of its key components is the Form widget, which simplifies the process of creating and handling HTML forms. Let's explore how Yii2 forms work with some examples.
+
+Creating a Basic Form:
+To create a basic form using the Yii2 Form widget, you need to follow these steps:
+Step 1: Define the form in your view file (e.g., views/site/index.php):
+
+php
+Copy code
+use yii\widgets\ActiveForm;
+use yii\helpers\Html;
+
+$form = ActiveForm::begin();
+echo $form->field($model, 'username');
+echo $form->field($model, 'email');
+echo Html::submitButton('Submit', ['class' => 'btn btn-primary']);
+ActiveForm::end();
+Step 2: Create a model class to represent the form data (e.g., models/ContactForm.php):
+
+php
+Copy code
+namespace app\models;
+
+use yii\base\Model;
+
+class ContactForm extends Model
+{
+    public $username;
+    public $email;
+
+    public function rules()
+    {
+        return [
+            [['username', 'email'], 'required'],
+            ['email', 'email'],
+        ];
+    }
+}
+Step 3: In your controller action, handle the form submission (e.g., controllers/SiteController.php):
+
+php
+Copy code
+use app\models\ContactForm;
+use Yii;
+
+public function actionIndex()
+{
+    $model = new ContactForm();
+
+    if ($model->load(Yii::$app->request->post()) && $model->validate()) {
+        // Form data is valid, process it here
+        // Example: sending an email
+        Yii::$app->mailer->compose()
+            ->setTo($model->email)
+            ->setFrom('admin@example.com')
+            ->setSubject('Contact Form Submission')
+            ->setTextBody('Username: ' . $model->username)
+            ->send();
+
+        Yii::$app->session->setFlash('success', 'Thank you for contacting us.');
+        return $this->refresh();
+    }
+
+    return $this->render('index', ['model' => $model]);
+}
+Working with Form Input Fields:
+The Form widget provides various methods to generate different types of form input fields. Here are some examples:
+Text Input Field:
+php
+Copy code
+echo $form->field($model, 'username')->textInput();
+Password Input Field:
+php
+Copy code
+echo $form->field($model, 'password')->passwordInput();
+Checkbox:
+php
+Copy code
+echo $form->field($model, 'rememberMe')->checkbox();
+Dropdown List:
+php
+Copy code
+$items = ['Option 1', 'Option 2', 'Option 3'];
+echo $form->field($model, 'selection')->dropDownList($items, ['prompt' => 'Select an option']);
+Displaying Validation Errors:
+Yii2 provides built-in support for form validation. If there are any validation errors, you can display them using the error() method:
+php
+Copy code
+echo $form->field($model, 'username')->textInput();
+echo $form->field($model, 'email')->textInput();
+echo $form->errorSummary($model);
+The errorSummary() method will display a summary of all validation errors for the model.
+
+These are just a few examples of how Yii2 forms work using the Form widget. Yii2 provides many more options and features for handling forms, such as file uploads, client-side validation, and custom validation rules. You can refer to the Yii2 documentation for more information: https://www.yiiframework.com/doc/guide/2.0/en/input-forms
+
+
+
+$postData = Yii::$app->request->post();
+var_dump($postData); // Debug the POST data
+
+
+
+
+
+ $postData =   $this->request->post();
+            var_dump($postData); // Debug the POST data
+            // if ($model->load($this->request->post()) && $model->save()) {
+            //     return $this->redirect(['view', 'id' => $model->id]);
+            // }
+                return 'Stop';
+            die('Stop Exection');
+
+
+
+use Yii;
+
+// Debugging POST data
+$postData = Yii::$app->request->post();
+var_dump($postData);
+
+// Debugging all parameters (GET and POST data)
+$params = Yii::$app->request->getBodyParams();
+var_dump($params);
+
+
+
+
+
+
+
+
+
+
+
+        $dataProvider = Video::find()->asArray()->all();   
+
+
+<!-- <?= GridView::widget([
+   
+        'dataProvider' => new \yii\data\ArrayDataProvider([
+            'allModels' =>  $dataProvider,
+            'pagination' => false,
+        ]),
+        'columns' => [
+            ['class' => 'yii\grid\SerialColumn'],
+
+            'id',
+            'video_id',
+            'title',
+            'description',
+            [
+                'class' => ActionColumn::className(),
+                'urlCreator' => function ($action, Video $model, $key, $index, $column) {
+                    return Url::toRoute([$action, 'id' => $model->id]);
+                 }
+            ],
+        ],
+    ]); ?> -->

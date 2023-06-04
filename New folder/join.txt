@@ -1,0 +1,90 @@
+To join three tables using Yii2 ActiveRecord and display the data using the TableWidget, you can follow these steps:
+
+Step 1: Define your ActiveRecord models for each table.
+
+php
+Copy code
+// Model for table A
+class TableAModel extends \yii\db\ActiveRecord
+{
+    // Define the table name
+    public static function tableName()
+    {
+        return 'table_a';
+    }
+
+    // Define the relationships
+    public function getTableB()
+    {
+        return $this->hasOne(TableBModel::class, ['id' => 'b_id']);
+    }
+
+    public function getTableC()
+    {
+        return $this->hasOne(TableCModel::class, ['id' => 'c_id']);
+    }
+}
+
+// Model for table B
+class TableBModel extends \yii\db\ActiveRecord
+{
+    // Define the table name
+    public static function tableName()
+    {
+        return 'table_b';
+    }
+}
+
+// Model for table C
+class TableCModel extends \yii\db\ActiveRecord
+{
+    // Define the table name
+    public static function tableName()
+    {
+        return 'table_c';
+    }
+}
+Step 2: Create a new action in your controller that retrieves the data from the three tables and passes it to the view.
+
+php
+Copy code
+use yii\data\ActiveDataProvider;
+
+public function actionJoinThreeTables()
+{
+    // Query to join the tables
+    $query = TableAModel::find()
+        ->joinWith(['tableB', 'tableC']);
+
+    // Create a data provider
+    $dataProvider = new ActiveDataProvider([
+        'query' => $query,
+    ]);
+
+    // Render the view with the data provider
+    return $this->render('joinThreeTables', [
+        'dataProvider' => $dataProvider,
+    ]);
+}
+Step 3: Create a view file (e.g., joinThreeTables.php) to display the data using the TableWidget.
+
+php
+Copy code
+use yii\widgets\TableView;
+
+// Display the data in a table
+echo TableView::widget([
+    'dataProvider' => $dataProvider,
+    'columns' => [
+        'id',
+        'tableB.column1',
+        'tableC.column2',
+        // Add more columns as needed
+        // ...
+    ],
+]);
+In the example above, column1 and column2 are assumed to be columns in table_b and table_c, respectively. Adjust the column names according to your table structure.
+
+Remember to update the table names, column names, and relationships in the models according to your actual database schema.
+
+Once you've completed these steps, you should be able to access the actionJoinThreeTables in your application and see the data displayed in a table format using the TableWidget.

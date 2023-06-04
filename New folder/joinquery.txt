@@ -1,0 +1,27 @@
+use yii\grid\GridView;
+use yii\data\ActiveDataProvider;
+use app\models\Table1;
+use app\models\Table2;
+use app\models\Table3;
+
+// Build the query
+$query = Table1::find()
+    ->select('table1.*, table2.column_name AS table2_column, table3.column_name AS table3_column')
+    ->join('INNER JOIN', 'table2', 'table1.foreign_key = table2.id')
+    ->join('INNER JOIN', 'table3', 'table2.foreign_key = table3.id');
+
+// Create a data provider with the query
+$dataProvider = new ActiveDataProvider([
+    'query' => $query,
+]);
+
+// Render the table using GridView widget
+echo GridView::widget([
+    'dataProvider' => $dataProvider,
+    'columns' => [
+        'column_name1',  // column from table1
+        'table2_column', // column from table2
+        'table3_column', // column from table3
+        // other columns...
+    ],
+]);
