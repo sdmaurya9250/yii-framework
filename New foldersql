@@ -1,0 +1,123 @@
+use yii\db\Query;
+
+$query = (new Query())
+    ->select([
+        'SUM(CASE WHEN status = 10 THEN 1 ELSE 0 END) AS selected',
+        'SUM(CASE WHEN status = 20 THEN 1 ELSE 0 END) AS pending',
+        'SUM(CASE WHEN status = 30 THEN 1 ELSE 0 END) AS rejected',
+    ])
+    ->from('your_table_name')
+    ->one();
+
+$selectedCount = $query['selected'];
+$pendingCount = $query['pending'];
+$rejectedCount = $query['rejected'];
+
+echo "Selected count: " . $selectedCount . "<br>";
+echo "Pending count: " . $pendingCount . "<br>";
+echo "Rejected count: " . $rejectedCount . "<br>";
+
+
+
+Yii Application
+
+// Assuming you have an Active Query object named $query
+$result = $query->select('status, COUNT(*) as count')
+    ->groupBy('status')
+    ->asArray()
+    ->all();
+
+// Prepare the data for the grid table
+$dataProvider = new \yii\data\ArrayDataProvider([
+    'allModels' => $result,
+    'pagination' => false,
+]);
+
+// Define the grid columns
+$columns = [
+    'status',
+    [
+        'attribute' => 'count',
+        'label' => 'Selected',
+        'value' => function ($model) {
+            return $model['status'] == 10 ? $model['count'] : '';
+        },
+    ],
+    [
+        'attribute' => 'count',
+        'label' => 'Pending',
+        'value' => function ($model) {
+            return $model['status'] == 20 ? $model['count'] : '';
+        },
+    ],
+    [
+        'attribute' => 'count',
+        'label' => 'Rejected',
+        'value' => function ($model) {
+            return $model['status'] == 30 ? $model['count'] : '';
+        },
+    ],
+];
+
+// Display the grid table
+echo \yii\grid\GridView::widget([
+    'dataProvider' => $dataProvider,
+    'columns' => $columns,
+]);
+
+// Assuming you have a model called 'YourModel' with an 'status' attribute
+
+$query = YourModel::find()
+    ->select([
+        'COUNT(CASE WHEN status = 10 THEN 1 END) AS selected',
+        'COUNT(CASE WHEN status = 20 THEN 1 END) AS pending',
+        'COUNT(CASE WHEN status = 30 THEN 1 END) AS rejected',
+    ])
+    ->groupBy('status');
+
+// Execute the query and retrieve the results
+$results = $query->all();
+
+
+
+#We can do
+
+use yii\grid\GridView;
+
+// Assuming you have retrieved the Active Query results into $dataProvider
+echo GridView::widget([
+    'dataProvider' => $dataProvider,
+    'columns' => [
+        // Other columns...
+        'id',
+        'name',
+        [
+            'attribute' => 'status',
+            'value' => function ($model) {
+                return $model->status;
+            },
+        ],
+        [
+            'label' => 'Selected',
+            'value' => function ($model) use ($dataProvider) {
+                $selectedCount = $dataProvider->query->where(['status' => 10])->count();
+                return $model->status == 10 ? $selectedCount : '';
+            },
+        ],
+        [
+            'label' => 'Pending',
+            'value' => function ($model) use ($dataProvider) {
+                $pendingCount = $dataProvider->query->where(['status' => 20])->count();
+                return $model->status == 20 ? $pendingCount : '';
+            },
+        ],
+        [
+            'label' => 'Rejected',
+            'value' => function ($model) use ($dataProvider) {
+                $rejectedCount = $dataProvider->query->where(['status' => 30])->count();
+                return $model->status == 30 ? $rejectedCount : '';
+            },
+        ],
+    ],
+]);
+
