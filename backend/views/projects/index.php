@@ -19,7 +19,12 @@ $this->params['breadcrumbs'][] = $this->title;
     <p>
         <?= Html::a('Create Projects', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
+    <?php
+    // echo '<pre>';
+    //     print_r($model);
+    // die;
 
+    ?>
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
@@ -36,6 +41,11 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attribute' => 'posts',
                 'value' => 'title'
             ],
+            [
+             'attribute' => 'created_at',
+            'format' => ['date', 'php:d/m/Y'], // Change the format here
+            ]
+            // 'created_at'
             // JOinin tables Start
             // 'epics.title',
             // JOinin tables Ending

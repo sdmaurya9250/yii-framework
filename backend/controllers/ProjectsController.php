@@ -73,7 +73,7 @@ class ProjectsController extends Controller
         ]);
     // echo '<pre>';
 
-    //     print_r($dataProvider);
+    //     print_r($dataProvider->getModels());
     //     die;
    return $this->render('index', [
             'dataProvider' => $dataProvider,
