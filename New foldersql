@@ -77,3 +77,47 @@ $query = YourModel::find()
 
 // Execute the query and retrieve the results
 $results = $query->all();
+
+
+
+#We can do
+
+use yii\grid\GridView;
+
+// Assuming you have retrieved the Active Query results into $dataProvider
+echo GridView::widget([
+    'dataProvider' => $dataProvider,
+    'columns' => [
+        // Other columns...
+        'id',
+        'name',
+        [
+            'attribute' => 'status',
+            'value' => function ($model) {
+                return $model->status;
+            },
+        ],
+        [
+            'label' => 'Selected',
+            'value' => function ($model) use ($dataProvider) {
+                $selectedCount = $dataProvider->query->where(['status' => 10])->count();
+                return $model->status == 10 ? $selectedCount : '';
+            },
+        ],
+        [
+            'label' => 'Pending',
+            'value' => function ($model) use ($dataProvider) {
+                $pendingCount = $dataProvider->query->where(['status' => 20])->count();
+                return $model->status == 20 ? $pendingCount : '';
+            },
+        ],
+        [
+            'label' => 'Rejected',
+            'value' => function ($model) use ($dataProvider) {
+                $rejectedCount = $dataProvider->query->where(['status' => 30])->count();
+                return $model->status == 30 ? $rejectedCount : '';
+            },
+        ],
+    ],
+]);
+
