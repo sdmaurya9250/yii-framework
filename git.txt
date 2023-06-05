@@ -1,0 +1,14 @@
+
+
+git checkout -b TASK_0000830
+git show-branch --list
+git status
+git switch TASK_0000469
+
+git merge TASK_0000401 DKPORTAL_04282021
+
+git show-branch --list
+
+git pull
+
+git push
