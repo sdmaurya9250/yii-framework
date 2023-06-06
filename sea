@@ -1,0 +1,71 @@
+
+2 / 2
+
+In Yii2, the GridView widget does not provide built-in filtering/searching capabilities for individual columns like DataTables does. However, you can implement column filtering in GridView by adding a dropdown filter manually. Here's an example of how you can achieve this:
+
+Add a column to your GridView configuration with a dropdown filter:
+php
+Copy code
+<?= GridView::widget([
+    'dataProvider' => $dataProvider,
+    'filterModel' => $searchModel,
+    'columns' => [
+        // other columns...
+        [
+            'attribute' => 'status',
+            'filter' => Html::activeDropDownList(
+                $searchModel,
+                'status',
+                ['1' => 'Yes', '0' => 'No'],
+                ['class' => 'form-control', 'prompt' => 'All']
+            ),
+            'value' => function ($model) {
+                return $model->status ? 'Yes' : 'No';
+            },
+        ],
+    ],
+]) ?>
+Make sure your search model ($searchModel) has a public property for the attribute you want to filter (e.g., status).
+
+In your search model, modify the search() method to apply the filtering based on the selected dropdown value:
+
+php
+Copy code
+public function search($params)
+{
+    $query = YourModel::find();
+
+    // ...other search conditions...
+
+    // Apply filter condition for the 'status' attribute
+    $query->andFilterWhere(['status' => $this->status]);
+
+    // ...other query configurations...
+
+    return $dataProvider;
+}
+
+
+
+use yii\grid\GridView;
+
+// ...
+
+<?= GridView::widget([
+    'dataProvider' => $dataProvider,
+    'filterModel' => $searchModel,
+    'columns' => [
+        // other columns...
+        [
+            'attribute' => 'yes_no_column',
+            'filter' => [
+                0 => 'No',
+                1 => 'Yes',
+            ],
+            'value' => function ($model) {
+                return $model->yes_no_column ? 'Yes' : 'No';
+            },
+        ],
+        // other columns...
+    ],
+]); ?>
