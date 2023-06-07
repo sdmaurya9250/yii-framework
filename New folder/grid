@@ -1,0 +1,133 @@
+To filter a column with joins across multiple tables in a Yii2 grid view, you can follow these steps:
+
+Set up the necessary relationships between the models involved in the join. This can be done using the hasOne, hasMany, or via methods in your ActiveRecord models.
+
+Create a new search model that extends yii\base\Model to handle the filtering and searching logic. This search model will contain the rules for the search fields and the filtering criteria.
+
+In the search model, define a new attribute to represent the column you want to filter on, along with any other related attributes you may need.
+
+Implement the search() method in the search model. This method will perform the database query and return the filtered results. Inside this method, you will need to join the necessary tables and apply the filter conditions.
+
+Update your grid view code to use the search model for filtering and display the filtered results.
+
+Here's an example to illustrate the above steps:
+
+Set up the relationships between the models. Let's assume you have three models: User, Order, and Product. The User model has a one-to-many relationship with both Order and Product.
+php
+Copy code
+// User model
+class User extends \yii\db\ActiveRecord
+{
+    public function getOrders()
+    {
+        return $this->hasMany(Order::class, ['user_id' => 'id']);
+    }
+    
+    public function getProducts()
+    {
+        return $this->hasMany(Product::class, ['user_id' => 'id']);
+    }
+}
+
+// Order model
+class Order extends \yii\db\ActiveRecord
+{
+    public function getUser()
+    {
+        return $this->hasOne(User::class, ['id' => 'user_id']);
+    }
+}
+
+// Product model
+class Product extends \yii\db\ActiveRecord
+{
+    public function getUser()
+    {
+        return $this->hasOne(User::class, ['id' => 'user_id']);
+    }
+}
+Create a new search model named UserSearch to handle the filtering logic.
+php
+Copy code
+class UserSearch extends \yii\base\Model
+{
+    public $username;
+    public $orderNumber;
+    public $productName;
+
+    public function rules()
+    {
+        return [
+            [['username', 'orderNumber', 'productName'], 'safe'],
+        ];
+    }
+
+    public function search($params)
+    {
+        $query = User::find()->joinWith(['orders', 'products']);
+
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+        ]);
+
+        $this->load($params);
+
+        if (!$this->validate()) {
+            return $dataProvider;
+        }
+
+        $query->andFilterWhere(['like', 'user.username', $this->username])
+            ->andFilterWhere(['like', 'order.order_number', $this->orderNumber])
+            ->andFilterWhere(['like', 'product.name', $this->productName]);
+
+        return $dataProvider;
+    }
+}
+In the view file containing the grid view, use the UserSearch model to create the search form and the grid view.
+php
+Copy code
+use yii\helpers\Html;
+use yii\grid\GridView;
+
+// ...
+
+$model = new UserSearch();
+
+echo $this->render('_search', ['model' => $model]);
+
+echo GridView::widget([
+    'dataProvider' => $model->search(Yii::$app->request->queryParams),
+    'filterModel' => $model,
+    'columns' => [
+        'username',
+        'email',
+        'orders.order_number',
+        'products.name',
+        // other columns
+        // ...
+    ],
+]);
+Create the _search view file to display the search form fields.
+php
+Copy code
+use yii\helpers
+
+
+
+
+
+
+
+<?= GridView::widget([
+    'dataProvider' => $dataProvider,
+    'columns' => [
+        'id',
+        'name',
+        'email:email',
+        'created_at:datetime',
+        [
+            'class' => 'yii\grid\ActionColumn',
+            'template' => '{view} {update} {delete}',
+        ],
+    ],
+]); ?>
