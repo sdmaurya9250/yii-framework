@@ -1,16 +1,5 @@
-To filter a column with joins across multiple tables in a Yii2 grid view, you can follow these steps:
-
-Set up the necessary relationships between the models involved in the join. This can be done using the hasOne, hasMany, or via methods in your ActiveRecord models.
-
-Create a new search model that extends yii\base\Model to handle the filtering and searching logic. This search model will contain the rules for the search fields and the filtering criteria.
-
-In the search model, define a new attribute to represent the column you want to filter on, along with any other related attributes you may need.
-
-Implement the search() method in the search model. This method will perform the database query and return the filtered results. Inside this method, you will need to join the necessary tables and apply the filter conditions.
-
-Update your grid view code to use the search model for filtering and display the filtered results.
-
-Here's an example to illustrate the above steps:
+https://www.youtube.com/watch?v=LDGaZZ6szLc
+https://www.youtube.com/watch?v=mw2fFFBG5Y8
 
 Set up the relationships between the models. Let's assume you have three models: User, Order, and Product. The User model has a one-to-many relationship with both Order and Product.
 php
