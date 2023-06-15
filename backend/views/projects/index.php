@@ -14,6 +14,16 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="projects-index">
 
+<?php
+Projects::initialize();
+
+// Access the concatenated value
+echo Projects::$total[Projects::xyz]; 
+// echo Projects::$total[1];
+// $d =new  Projects;
+// echo Projects::$total[Projects::xyz];
+?>
+
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>

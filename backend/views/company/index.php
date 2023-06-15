@@ -26,11 +26,14 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
    
+    // how to add filter in Yii2 framework?
+
+    <!-- // how to connect  -->
+
+
     
 <?php
 
-
-use yii\grid\GridView;
 
 // Your data array
 $data = [

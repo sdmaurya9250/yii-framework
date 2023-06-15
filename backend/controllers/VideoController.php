@@ -7,6 +7,8 @@ use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use Yii;
+use yii\base\Security;
 
 /**
  * VideoController implements the CRUD actions for Video model.
@@ -66,6 +68,17 @@ class VideoController extends Controller
         //     ->asArray()
         //     ->one();
         
+        
+
+        //    return  Yii::$app;
+
+       
+                // Generate a secure random password salt
+            //     $salt = Yii::$app->security->generateRandomString();
+
+            //     // Hash the password using the salt
+            //     $password = 'my_password';
+            //  return   $hashedPassword = Yii::$app->security->generatePasswordHash($password . $salt);
 
 
         $dataProvider = new ActiveDataProvider([
@@ -103,6 +116,8 @@ class VideoController extends Controller
      */
     public function actionView($id)
     {
+
+     
         return $this->render('view', [
             'model' => $this->findModel($id),
         ]);

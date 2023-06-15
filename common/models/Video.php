@@ -13,6 +13,15 @@ use Yii;
  */
 class Video extends \yii\db\ActiveRecord
 {
+
+    const MY_CONSTANT = 1;
+    const MY_CONSTANT1 = 2;
+
+    public static $details = [
+        self::MY_CONSTANT => 'Hey This is me',
+        self::MY_CONSTANT1 => 'Hey This is you',
+    ];
+
     /**
      * {@inheritdoc}
      */

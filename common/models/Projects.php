@@ -4,6 +4,7 @@ namespace common\models;
 
 use Yii;
 use common\models\EpicsList;
+use common\models\Video;
 
 /**
  * This is the model class for table "projects".
@@ -25,6 +26,37 @@ class Projects extends \yii\db\ActiveRecord
     /**
      * {@inheritdoc}
      */
+    const pqr = 3;
+    const xyz = 5;
+     public static $total = [];
+
+     public static function initialize()
+     {
+         self::$total = [
+             self::pqr => 'This is pqr',
+             self::xyz => 'This is xyz' . Video::$details[1],
+         ];
+     }
+    //  const pqr = 3;
+    //  const xyz = 5;
+ 
+    //  public static $total = [
+    //     self::pqr => 'This is pqr',
+    //     self::xyz => 'This is xyz' . Video::$details[1],
+    // ];
+
+    // const PQR = 3;
+    // const XYZ = 5;
+
+    // public static function getTotal()
+    // {
+    //     return [
+    //         self::PQR => 'This is pqr',
+    //         self::XYZ => 'This is xyz' . Video::$details[Video::MY_CONSTANT],
+    //     ];
+    // }
+    
+
     public static function tableName()
     {
         return 'projects';

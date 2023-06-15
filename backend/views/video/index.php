@@ -20,7 +20,14 @@ $this->params['breadcrumbs'][] = $this->title;
         <?= Html::a('Create Video', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
+<?php
 
+// echo Video::$details;
+
+print_r(Video::$details);
+echo Yii::$app->session->get('message')
+
+?>
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'columns' => [
