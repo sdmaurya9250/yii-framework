@@ -1,0 +1,69 @@
+Calculate the total fees for each course:
+sql
+Copy code
+SELECT course_id, SUM(total_fees) AS course_total_fees
+FROM course
+GROUP BY course_id;
+Calculate the total fees paid by each student:
+sql
+Copy code
+SELECT student_id, SUM(amount_paid) AS total_fees_paid
+FROM payment
+GROUP BY student_id;
+Calculate the percentage of fees paid by each student:
+sql
+Copy code
+SELECT s.student_id, s.student_name, c.course_id, c.course_name, 
+    p.total_fees_paid, c.course_total_fees, 
+    (p.total_fees_paid / c.course_total_fees) * 100 AS percentage_paid
+FROM student s
+JOIN payment p ON s.student_id = p.student_id
+JOIN course c ON p.course_id = c.course_id;
+This query will give you the student ID, student name, course ID, course name, total fees paid by the student, total fees for the course, and the percentage of fees paid by the student.
+
+To find specific percentages like 10%, 25%, and 50%, you can modify the above query using the HAVING clause:
+
+For 10%:
+
+sql
+Copy code
+SELECT s.student_id, s.student_name, c.course_id, c.course_name, 
+    p.total_fees_paid, c.course_total_fees, 
+    (p.total_fees_paid / c.course_total_fees) * 100 AS percentage_paid
+FROM student s
+JOIN payment p ON s.student_id = p.student_id
+JOIN course c ON p.course_id = c.course_id
+HAVING percentage_paid >= 10;
+For 25%:
+
+sql
+Copy code
+SELECT s.student_id, s.student_name, c.course_id, c.course_name, 
+    p.total_fees_paid, c.course_total_fees, 
+    (p.total_fees_paid / c.course_total_fees) * 100 AS percentage_paid
+FROM student s
+JOIN payment p ON s.student_id = p.student_id
+JOIN course c ON p.course_id = c.course_id
+HAVING percentage_paid >= 25;
+For 50%:
+
+sql
+Copy code
+SELECT s.student_id, s.student_name, c.course_id, c.course_name, 
+    p.total_fees_paid, c.course_total_fees, 
+    (p.total_fees_paid / c.course_total_fees) * 100 AS percentage_paid
+FROM student s
+JOIN payment p ON s.student_id = p.student_id
+JOIN course c ON p.course_id = c.course_id
+HAVING percentage_paid >= 50;
+In the above queries, replace student, payment, and course with the actual table names in your database.
+
+
+
+
+
+
+
+
+
+

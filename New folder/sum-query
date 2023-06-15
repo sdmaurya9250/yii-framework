@@ -1,0 +1,47 @@
+<?php
+
+namespace app\controllers;
+
+use yii\web\Controller;
+use yii\data\ArrayDataProvider;
+use app\models\Student;
+use app\models\Payment;
+use app\models\Course;
+
+class SiteController extends Controller
+{
+    public function actionIndex()
+    {
+        // Fetch all students and their payments
+        $students = Student::find()->all();
+        
+        $data = [];
+        foreach ($students as $student) {
+            $payments = Payment::find()->where(['student_id' => $student->id])->all();
+            $totalPaid = 0;
+            
+            foreach ($payments as $payment) {
+                $course = Course::findOne($payment->course_id);
+                $totalPaid += $payment->amount_paid;
+            }
+            
+            $totalFees = $course->total_fees;
+            $paymentPercentage = ($totalPaid / $totalFees) * 100;
+            
+            $data[] = [
+                'student_name' => $student->name,
+                'student_id' => $student->id,
+                'payment_percentage' => $paymentPercentage,
+            ];
+        }
+        
+        $dataProvider = new ArrayDataProvider([
+            'allModels' => $data,
+            'pagination' => false,
+        ]);
+        
+        return $this->render('index', [
+            'dataProvider' => $dataProvider,
+        ]);
+    }
+}

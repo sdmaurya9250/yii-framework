@@ -1,0 +1,47 @@
+
+SELECT column1, column2
+FROM table1
+WHERE column3 IN (
+    SELECT column4
+    FROM table2
+    WHERE column5 IN (
+        SELECT column6
+        FROM table3
+        WHERE condition
+    )
+);
+
+SELECT
+    order_id,
+    total_value - (
+        SELECT IFNULL(SUM(amount), 0)
+        FROM payments
+        WHERE payments.order_id = orders.order_id
+    ) AS remaining_amount
+FROM
+    orders;
+
+
+SELECT
+  o.order_id,
+  ((
+    SELECT SUM(oi.item_price)
+    FROM order_items oi
+    WHERE oi.order_id = o.order_id
+  ) - (
+    SELECT COUNT(*)
+    FROM orders
+  )) AS total_revenue
+FROM orders o;
+
+
+
+SELECT (
+    SELECT COUNT(*)   -- Nested subquery to count the total
+    FROM table_name
+    WHERE condition
+) - (
+    SELECT COUNT(*)   -- Nested subquery to count another value
+    FROM table_name
+    WHERE condition
+) AS result;

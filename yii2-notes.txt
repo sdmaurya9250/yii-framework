@@ -1,0 +1,82 @@
+Hashing  in Yii2
+
+use yii\base\Security;
+
+use yii\base\Security;
+
+// Generate a secure random password salt
+$salt = Yii::$app->security->generateRandomString();
+
+// Hash the password using the salt
+$password = 'my_password';
+$hashedPassword = Yii::$app->security->generatePasswordHash($password . $salt);
+
+
+Verifying a Password:
+
+use yii\base\Security;
+
+$password = 'my_password';
+$hashedPassword = '...'; // The hashed password stored in the database
+$salt = '...'; // The salt associated with the hashed password
+
+$isValidPassword = Yii::$app->security->validatePassword($password . $salt, $hashedPassword);
+if ($isValidPassword) {
+    // Password is valid
+} else {
+    // Password is invalid
+}
+
+
+
+
+
+
+ Create a Session
+
+ $messgae =  Yii::$app->session->set('message', 'Hello, World!');
+
+  // Get session Any where
+
+<?php
+echo Yii::$app->session->get('message')
+
+?>
+
+
+#Check session is active or not
+if (Yii::$app->session->isActive) {
+    // Session is active
+} else {
+    // Session has expired
+}
+
+
+Destroy session
+
+// Remove a specific session variable
+$session->remove('username');
+
+// Destroy the session
+$session->destroy();
+
+
+ActiveDataProvider class provides data for widgets like GridView and 
+
+query: The query object or ActiveRecord instance used for retrieving data. You can set this parameter to define a custom query or specify additional conditions, joins, and sorting.
+
+pagination: The pagination configuration for the data provider. You can set properties like pageSize to determine the number of items per page and totalCount to specify the total number of items.
+
+sort: The sorting configuration for the data provider. You can set properties like attributes to specify the sortable attributes and their sorting directions.
+
+key: The name of the primary key attribute. It is used by the data provider to identify unique records when updating or deleting items.
+
+totalCount: The total number of records in the data provider. You can set this parameter if you already know the total count without executing the query.
+
+paginationRoute: The route used for generating pagination URLs. It is useful when you need to specify a custom route for pagination links.
+
+paginationParams: Additional query parameters to be included in the pagination URLs. You can set this parameter to include custom parameters in pagination links.
+
+sortParam: The parameter name used for specifying the sorting in the query string. By default, it is set to 'sort', but you can customize it if needed.
+
+params: Additional query parameters to be included in the data provider's query. You can set this parameter to pass custom parameters to the query.
