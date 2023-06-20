@@ -27,7 +27,7 @@ echo Projects::$total[Projects::xyz];
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a('Create Projects', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Send EMail', ['#'], ['class' => 'btn btn-success','id' => 'send-email-form']) ?>
     </p>
     <?php
     // echo '<pre>';
@@ -35,11 +35,25 @@ echo Projects::$total[Projects::xyz];
     // die;
 
     ?>
+     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
 
+   <?= Html::a('Send', ['#'], ['class' => 'btn btn-success']) ?>
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'columns' => [
+            // ['class' => 'yii\grid\Checkbox'],
             ['class' => 'yii\grid\SerialColumn'],
+            [
+                'class' => 'yii\grid\CheckboxColumn',
+                // 'format' => 'raw',
+                // 'content' => function ($model, $key, $index, $column) {
+                //     return Html::checkbox($column->id, false, [
+                //         'value' => $key,
+                //         'disabled' => true,
+                //     ]);
+                // },
+            ],
+            
 
             'id',
             'customer_contact',
@@ -79,3 +93,41 @@ echo Projects::$total[Projects::xyz];
 
 
 </div>
+<?php
+$this->registerJs('
+    $(document).on("click", "#send-email-btn", function() {
+        alert(1221)
+
+    });
+        ');
+        ?>
+<!-- 
+<script>
+    $(document).ready(function() {
+    // Handle the click event of the send button
+    $('#send-email-btn').click(function() {
+        // Get the selected rows
+        alert('dsffd')
+        // var selectedRows = $('#w0').yiiGridView('getSelectedRows');
+
+        // Send the Ajax request
+        // $.ajax({
+        //     url: 'index.php?r=site/send-email',
+        //     type: 'post',
+        //     dataType: 'json',
+        //     data: {selectedRows: selectedRows},
+        //     success: function(response) {
+        //         if (response.success) {
+        //             alert('Email sent successfully.');
+        //         } else {
+        //             alert('Failed to send email.');
+        //         }
+        //     },
+        //     error: function() {
+        //         alert('An error occurred while sending the email.');
+        //     }
+        // });
+    });
+});
+
+</script> -->
