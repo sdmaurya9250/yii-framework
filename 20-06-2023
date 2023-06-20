@@ -1,0 +1,57 @@
+Define the relations in the models:
+In the User model:
+
+php
+Copy code
+public function getStudent()
+{
+    return $this->hasOne(Student::class, ['id' => 'student_id']);
+}
+In the Student model:
+
+php
+Copy code
+public function getInquiry()
+{
+    return $this->hasOne(Inquiry::class, ['id' => 'inquiry_id']);
+}
+
+public function getUser()
+{
+    return $this->hasOne(User::class, ['student_id' => 'id']);
+}
+Set up the GridView in your view file:
+php
+Copy code
+use yii\grid\GridView;
+
+<?= GridView::widget([
+    'dataProvider' => $dataProvider,
+    'columns' => [
+        'id',
+        'student.name', // Assuming 'name' is a column in the 'student' table
+        'user.created_at', // Retrieves 'created_at' from the 'users' table
+        // Other columns...
+    ],
+]) ?>
+Create the query in the controller action:
+php
+Copy code
+use yii\data\ActiveDataProvider;
+use app\models\Inquiry;
+
+public function actionIndex()
+{
+    $dataProvider = new ActiveDataProvider([
+        'query' => Inquiry::find()
+            ->joinWith(['student', 'student.user']) // Join with 'student' and 'user' tables
+            ->select(['inquiry.*', 'user.created_at']) // Select fields from 'inquiry' and 'users' tables
+    ]);
+
+    return $this->render('index', [
+        'dataProvider' => $dataProvider,
+    ]);
+}
+In the above code, the joinWith method is used to join the student and user tables with the inquiry table. The select method is used to specify the columns you want to retrieve, including the user.created_at field.
+
+Make sure to adjust the model and table names (User, Student, Inquiry) and the column names (name, id, inquiry_id, student_id, created_at) to match your actual application structure.
