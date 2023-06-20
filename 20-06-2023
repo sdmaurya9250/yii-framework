@@ -1,8 +1,16 @@
-Define the relations in the models:
-In the User model:
+use yii\db\ActiveQuery;
 
-php
-Copy code
+// ...
+
+$query = User::find()
+    ->leftJoin(Student::tableName(), 'student.id = user.student_id')
+    ->leftJoin(Inquiry::tableName(), 'inquiry.id = student.inquiry_id')
+    ->select([
+        'user.*',
+        'student_created_at' => 'student.created_at'
+    ]);
+
+
 public function getStudent()
 {
     return $this->hasOne(Student::class, ['id' => 'student_id']);
