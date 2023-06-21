@@ -45,12 +45,14 @@ class InquirySearch extends Inquiry
         // ->leftJoin('student', 'student.id = inquiry.student_id')
         // ->leftJoin('users', 'users.id = student.id');
         // add conditions that should always apply here
-        $query = Inquiry::find()
-        ->joinWith(['student', 'student.user']) // Join with 'student' and 'user' tables
-        ->select([
-            'inquiry.*',
-            'users.created_at AS user_created_at',
-        ]);
+        $query = Inquiry::find();
+        // ->joinWith(['student', 'student.user']) // Join with 'student' and 'user' tables
+        // ->select(['status', 'COUNT(*) AS count'])
+       
+        // ->groupBy('status');
+
+           // Apply filters
+         
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
@@ -69,6 +71,11 @@ class InquirySearch extends Inquiry
             'id' => $this->id,
             'student_id' => $this->student_id,
         ]);
+
+        $query->andFilterWhere(['status' => 3]); // Filter by status 3
+
+        // Group by status
+        $query->groupBy(['CASE WHEN status = 3 THEN status ELSE 0 END']);
 
         $query->andFilterWhere(['like', 'name', $this->name]);
 

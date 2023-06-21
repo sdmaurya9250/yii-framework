@@ -53,6 +53,7 @@ class Video extends \yii\db\ActiveRecord
             'video_id' => 'Video ID',
             'title' => 'Title',
             'description' => 'Description',
+            'status' => 'Status Me',
         ];
     }
 

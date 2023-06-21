@@ -36,6 +36,7 @@ echo Yii::$app->session->get('message')
             'id',
             'video_id',
             'title',
+            'status',
             [
                 'class' => ActionColumn::className(),
                 'urlCreator' => function ($action, Video $model, $key, $index, $column) {
