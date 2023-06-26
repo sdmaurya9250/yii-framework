@@ -1,0 +1,107 @@
+use yii\helpers\Html;
+
+$statuses = ['Active', 'Inactive']; // Array of status options
+
+$selectedStatus = 'Active'; // The status you want to be selected by default
+
+echo Html::dropDownList(
+    'status', // Name of the dropdown input field
+    $selectedStatus, // Selected value
+    $statuses, // Array of status options
+    ['class' => 'form-control', 'prompt' => 'Select Status'] // Additional options
+);
+
+
+<?php
+use yii\helpers\Html;
+use yii\widgets\ActiveForm;
+
+// Your form code
+$form = ActiveForm::begin();
+
+// Dropdown filter with default selection
+echo $form->field($model, 'status')->dropDownList(
+    ['Active' => 'Active', 'Inactive' => 'Inactive'],
+    ['prompt' => 'Select status']
+)->label('Status');
+
+ActiveForm::end();
+?>
+
+
+// Assuming you have a model called $model with a status attribute
+$statusOptions = [
+    'Active' => 'Active',
+    'Inactive' => 'Inactive',
+];
+
+// Set the default selected value
+$model->status = 'Active';
+
+echo Html::dropDownList('status', $model->status, $statusOptions, ['class' => 'form-control']);
+
+
+use yii\helpers\Html;
+use yii\widgets\ActiveForm;
+
+// Your form code
+$form = ActiveForm::begin();
+
+// Dropdown filter options
+$options = [
+    0 => 'Closed',
+    1 => 'Active',
+    8 => 'Active',
+];
+
+// Default selection
+$defaultSelection = 1;
+
+// Dropdown filter
+echo $form->field($model, 'status')->dropDownList($options, ['prompt' => 'Select Status', 'options' => [$defaultSelection => ['selected' => true]]]);
+
+// Other form fields...
+
+ActiveForm::end();
+
+
+
+use yii\helpers\Html;
+use yii\helpers\ArrayHelper;
+use yii\widgets\ActiveForm;
+
+// Your model class
+use app\models\YourModel;
+
+// Create an array of filter options
+$filterOptions = [
+    '1' => 'Active',
+    '0' => 'Closed',
+];
+
+// Set the default filter value
+$defaultFilterValue = '1'; // Active
+
+// Filter your model records
+$searchModel = new YourModel();
+$dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+// Form and filter code
+$form = ActiveForm::begin([
+    'method' => 'get',
+    'action' => ['your-controller/action'],
+]);
+
+echo $form->field($searchModel, 'status')->dropDownList(
+    ArrayHelper::map($filterOptions, 'value', 'label'),
+    [
+        'prompt' => 'Select Filter', // Optional prompt text
+        'options' => [
+            $defaultFilterValue => ['Selected' => true], // Set the default value
+        ],
+    ]
+);
+
+echo Html::submitButton('Apply Filter', ['class' => 'btn btn-primary']);
+
+ActiveForm::end();
