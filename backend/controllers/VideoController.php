@@ -161,6 +161,21 @@ class VideoController extends Controller
     {
         $model = $this->findModel($id);
 
+        $totalViews = $model->status;
+        $newValue = 3;
+        if ($totalViews + $newValue > 5) {
+            // $this->addError($attribute, 'You have exceeded the limit.');
+            return 'Hello';
+        }else{
+            return 'Hey';
+        }
+
+        // $columnSum = self::find()->sum('status');
+
+        print_r(  $totalViews);
+
+        exit;
+
         if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         }
@@ -168,6 +183,25 @@ class VideoController extends Controller
         return $this->render('update', [
             'model' => $model,
         ]);
+    }
+    public function actionUpdates()
+    {
+        return 'Heyy';
+        $model = $this->findModel($id);
+
+        // $columnSum = self::find()->sum('status');
+
+        // print_r($columnSum );
+
+        // exit;
+
+        if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
+            return $this->redirect(['view', 'id' => $model->id]);
+        }
+
+        // return $this->render('update', [
+        //     'model' => $model,
+        // ]);
     }
 
     /**
