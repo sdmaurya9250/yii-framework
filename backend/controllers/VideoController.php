@@ -3,6 +3,7 @@
 namespace backend\controllers;
 
 use common\models\Video;
+use common\models\VideoSearch;
 use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -80,7 +81,8 @@ class VideoController extends Controller
             //     $password = 'my_password';
             //  return   $hashedPassword = Yii::$app->security->generatePasswordHash($password . $salt);
 
-
+            $searchModel = new VideoSearch();
+            $dataProvider = $searchModel->search($this->request->queryParams);
         $dataProvider = new ActiveDataProvider([
             'query' => Video::find(),
             /*
@@ -94,7 +96,7 @@ class VideoController extends Controller
             ],
             */
         ]);
-
+     
         // $posts = $dataProvider->getModels();
         // $count = $dataProvider->getCount();
         // $count = $dataProvider->getTotalCount();
@@ -105,6 +107,7 @@ class VideoController extends Controller
 
         return $this->render('index', [
             'dataProvider' => $dataProvider,
+            'searchModels' => $searchModel,
         ]);
     }
 

@@ -1,0 +1,58 @@
+ if ($columnSum + $newValue > 5) {
+        $this->addError($attribute, 'You have exceeded the limit.');
+    }
+
+  [
+                'attribute' => 'status',
+                'value' => function ($model) {
+                    switch ($model->status) {
+                        case 1:
+                            return 'Reject';
+                        case 2:
+                            return 'Selected';
+                        case 3:
+                            return 'Applied';
+                        default:
+                            return 'Unknown';
+                    }
+                },
+                'format' => 'html',
+                'filter' => [
+                    1 => 'Reject',
+                    2 => 'Selected',
+                    3 => 'Applied',
+                ],
+            ],
+
+
+use yii\grid\GridView;
+
+// ...
+
+echo GridView::widget([
+    'dataProvider' => $dataProvider,
+    'filterModel' => $searchModel,
+    'columns' => [
+        // Other columns...
+        [
+            'attribute' => 'status',
+            'value' => function ($model) {
+                switch ($model->status) {
+                    case 10:
+                        return 'Reject';
+                    case 5:
+                        return 'Selected';
+                    case 1:
+                        return 'Applied';
+                    default:
+                        return 'Unknown';
+                }
+            },
+            'filter' => [
+                10 => 'Reject',
+                5 => 'Selected',
+                1 => 'Applied',
+            ],
+        ],
+    ],
+]);

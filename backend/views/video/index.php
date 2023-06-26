@@ -24,19 +24,69 @@ $this->params['breadcrumbs'][] = $this->title;
 
 // echo Video::$details;
 
-print_r(Video::$details);
-echo Yii::$app->session->get('message')
+// print_r(Video::$details);
+// echo Yii::$app->session->get('message')
 
 ?>
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
+        'filterModel' => $searchModels,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
             'id',
             'video_id',
             'title',
-            'status',
+            // 'status',
+            // [
+            //     'attribute' => 'status',
+            //     'value' => function ($model) {
+            //         switch ($model->status) {
+            //             case 1:
+            //                 return 'Reject';
+            //             case 2:
+            //                 return 'Selected';
+            //             case 3:
+            //                 return 'Applied';
+            //             default:
+            //                 return 'Unknown';
+            //         }
+            //     },
+            //     'format' => 'html',
+            //     'filter' => [
+            //         1 => 'Reject',
+            //         2 => 'Selected',
+            //         3 => 'Applied',
+            //     ],
+            // ],
+            [
+                'attribute' => 'status',
+                'format' => 'raw',
+                'value' => function ($model) {
+                    switch ($model->status) {
+                        case Video::STATUS_APPLIED:
+                            return '<span class="label label-success">Applied</span>';
+                        case Video::STATUS_SELECTED:
+                            return '<span class="label label-primary">Selected</span>';
+                        case Video::STATUS_REJECTED:
+                            return '<span class="label label-danger">Rejected</span>';
+                        default:
+                            return '';
+                    }
+                },
+                'filter' => Html::activeDropDownList(
+                    $searchModels,
+                    'status',
+                    [
+                        '' => 'All',
+                        Video::STATUS_APPLIED => 'Applied',
+                        Video::STATUS_SELECTED => 'Selected',
+                        Video::STATUS_REJECTED => 'Rejected',
+                    ],
+                    ['class' => 'form-control', 'prompt' => 'Select Status']
+                ),
+            ],
+    
             [
                 'class' => ActionColumn::className(),
                 'urlCreator' => function ($action, Video $model, $key, $index, $column) {
