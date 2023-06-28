@@ -16,7 +16,11 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'title')->textInput(['maxlength' => true]) ?>
     <?= $form->field($model, 'description')->textarea(['rows' => 6]) ?>
-
+    <?= $form->field($model, 'checkboxValues')->checkboxList([
+    'option1' => 'Option 1',
+    'option2' => 'Option 2',
+    'option3' => 'Option 3',
+]); ?>
     <div class="form-group">
         <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
     </div>

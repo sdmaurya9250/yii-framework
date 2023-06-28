@@ -1,4 +1,19 @@
- if ($columnSum + $newValue > 5) {
+ /var/www/html
+cat /etc/apache2/sites-available/000-default.conf
+
+sudo chown -R 775 www-data:www-data storage/framework/cache
+
+
+chmod -R 775 storage
+chmod -R 775 bootstrap/cache
+
+sudo chown -R www-data:www-data /path/to/your/laravel-project
+sudo chmod -R 755 /path/to/your/laravel-project/storage
+sudo chmod -R 755 storage/bootstrap/cache
+
+
+54.174.179.203
+if ($columnSum + $newValue > 5) {
         $this->addError($attribute, 'You have exceeded the limit.');
     }
 

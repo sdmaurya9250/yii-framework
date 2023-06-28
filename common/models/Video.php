@@ -1,7 +1,7 @@
 <?php
 
 namespace common\models;
-
+use yii\helpers\Json;
 use Yii;
 
 /**
@@ -21,6 +21,7 @@ class Video extends \yii\db\ActiveRecord
     const STATUS_SELECTED = 2;
     const STATUS_REJECTED = 1;
 
+    // public $checkboxes;
 
     // public static $details = [
     //     self::MY_CONSTANT => 'Hey This is me',
@@ -30,6 +31,8 @@ class Video extends \yii\db\ActiveRecord
     /**
      * {@inheritdoc}
      */
+
+     public $checkboxValues ;
     public static function tableName()
     {
         return 'videos';
@@ -45,8 +48,57 @@ class Video extends \yii\db\ActiveRecord
             [['video_id'], 'string', 'max' => 16],
             [['title'], 'string', 'max' => 50],
             [['description'], 'string', 'max' => 50],
+            [['checkboxValues'], 'safe'],
         ];
     }
+  
+
+    public function getOptions()
+    {
+        return Json::decode($this->getAttribute('checkboxValues'));
+    }
+
+    public function setOptions($value)
+    {
+        $this->setAttribute('checkboxValues', Json::encode($value));
+    }
+
+    
+    // public function getMultipleSelection()
+    // {
+    //     return Json::decode($this->checkboxValues);
+    // }
+
+    // public function setMultipleSelection($value)
+    // {
+    //     $this->checkboxValues = Json::encode($value);
+    // }
+
+    // public function save($runValidation = true, $attributeNames = null)
+    // {
+    //     $this->checkboxValues = Json::encode($this->checkboxValues);
+    //     return parent::save($runValidation, $attributeNames);
+    // }
+    // Override the `beforeSave` method to encode the checkbox values as JSON
+    // public function afterFind()
+    // {
+    //     parent::afterFind();
+
+    //     // Decode the JSON data from the database and assign it to the checkboxes property
+    //     $this->checkboxes = json_decode($this->json_data, true);
+    // }
+
+    // public function beforeSave($insert)
+    // {
+    //     if (parent::beforeSave($insert)) {
+    //         // Encode the checkboxes property as JSON and save it to the database
+    //         $this->json_data = json_encode($this->checkboxes);
+
+    //         return true;
+    //     }
+
+    //     return false;
+    // }
 
     /**
      * {@inheritdoc}
