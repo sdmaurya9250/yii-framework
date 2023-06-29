@@ -131,6 +131,37 @@ class VideoController extends Controller
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return string|\yii\web\Response
      */
+    public function actionTest()
+    {
+    //     Yii::$app->mailer->compose()
+    //     ->setFrom('surendra75maurya@gmail.com')
+    //     ->setTo('surendra75maurya@gmail.com')
+    //     ->setSubject('Hello!')
+        
+    //     ->setTextBody('This is the plain text content of the email. <img src="https://www.yiiframework.com/image/logo.svg"/>')
+    //     ->send();
+
+    // echo 'Email sent successfully.';
+
+    $message = Yii::$app->mailer->compose();
+    $message->setFrom('surendra75maurya@gmail.com');
+    $message->setTo('surendra75maurya@gmail.com');
+    $message->setSubject('Email with Attachment');
+    $message->setTextBody('This is the text content of the email.');
+
+    // Attach a file
+    // $attachmentPath = 'https://dharmakarma.net/assets/img/images/cal9.jpg';
+    $message->attach($attachmentPath);
+
+    // Send the email
+    if ($message->send()) {
+        echo 'Email sent successfully!';
+    } else {
+        echo 'Failed to send email.';
+    }
+        
+    }
+    
     public function actionCreate()
     {
         $model = new Video();

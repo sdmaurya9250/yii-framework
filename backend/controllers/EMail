@@ -1,0 +1,62 @@
+Sure! I can provide you with an example code for sending an HTML email with attachments using the Yii2 framework. Please make sure you have the Yii2 framework installed and configured before proceeding with the code.
+
+First, you need to set up the email configuration in the params.php or main.php configuration file. Here's an example configuration:
+
+php
+Copy code
+return [
+    // other configurations
+
+    'mailer' => [
+        'class' => 'yii\swiftmailer\Mailer',
+        'viewPath' => '@app/mail',
+        'useFileTransport' => false, // set this to false to send real emails
+        'transport' => [
+            'class' => 'Swift_SmtpTransport',
+            'host' => 'your-smtp-host',
+            'username' => 'your-smtp-username',
+            'password' => 'your-smtp-password',
+            'port' => 'your-smtp-port',
+            'encryption' => 'your-smtp-encryption',
+        ],
+    ],
+
+    // other configurations
+];
+Next, create an HTML template file for your email. For example, create a file named my-email-template.php in the views/mail directory with the following content:
+
+html
+Copy code
+<html>
+<head></head>
+<body>
+    <h1>Hello, <?= $username ?>!</h1>
+    <p>This is an example email sent using Yii2.</p>
+</body>
+</html>
+Now, you can use the following code to send an email with an attachment:
+
+php
+Copy code
+use Yii;
+use yii\swiftmailer\Message;
+
+// Create a new instance of the Swift_Message class
+$message = Yii::$app->mailer->compose('my-email-template', ['username' => 'John Doe'])
+    ->setFrom('sender@example.com')
+    ->setTo('recipient@example.com')
+    ->setSubject('Example Email with Attachment');
+
+// Attach a file to the email
+$attachmentPath = '/path/to/attachment.pdf'; // Path to the attachment file
+$message->attach($attachmentPath);
+
+// Send the email
+if ($message instanceof Message) {
+    $message->send();
+} else {
+    throw new \yii\base\InvalidConfigException('The "message" property must be an instance of "yii\swiftmailer\Message".');
+}
+In the code above, replace 'sender@example.com' with the email address you want to send the email from and 'recipient@example.com' with the recipient's email address. Also, make sure to provide the correct path to the attachment file in the $attachmentPath variable.
+
+That's it! With this code, you should be able to send an HTML email with an attachment using the Yii2 framework.
