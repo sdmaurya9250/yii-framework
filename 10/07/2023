@@ -1,4 +1,54 @@
 10/07/2023
+// In your controller action
+public function actionIndex()
+{
+    $searchModel = new Table1Search();
+    $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+    return $this->render('index', [
+        'searchModel' => $searchModel,
+        'dataProvider' => $dataProvider,
+    ]);
+}
+
+// In your search model (Table1Search.php)
+class Table1Search extends Table1
+{
+    public function rules()
+    {
+        return [
+            [['column1', 'column2'], 'safe'],
+        ];
+    }
+
+    public function search($params)
+    {
+        $query = Table1::find()
+            ->joinWith('table2')
+            ->joinWith('table3', false);
+
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+        ]);
+
+        $this->load($params);
+
+        if (!$this->validate()) {
+            return $dataProvider;
+        }
+
+        $query->andFilterWhere(['LIKE', 'table1.column1', $this->column1])
+            ->andFilterWhere(['=', 'table2.column2', $this->column2]);
+
+        $query->andWhere(['IS NOT', 'table3.id', null]); // Only fetch records where table3 exists
+
+        // Get the count of rows from table3
+        $query->select(['table1.*', 'COUNT(table3.id) as table3_count'])
+            ->groupBy('table1.id');
+
+        return $dataProvider;
+    }
+}
 
 
 use yii\db\Query;
