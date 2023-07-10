@@ -1,0 +1,55 @@
+10/07/2023
+
+
+use yii\db\Query;
+
+// Perform the search filter
+$query = (new Query())
+    ->select(['t1.*', 'COUNT(t3.id) AS row_count'])
+    ->from('table1 t1')
+    ->leftJoin('table2 t2', 't1.id = t2.table1_id')
+    ->leftJoin('table3 t3', 't2.id = t3.table2_id')
+    ->where(/* Your filter conditions */)
+    ->groupBy('t1.id')
+    ->orderBy(['t1.id' => SORT_DESC]);
+
+// Get the total count of rows for pagination
+$countQuery = (new Query())
+    ->from('table1 t1')
+    ->leftJoin('table2 t2', 't1.id = t2.table1_id')
+    ->leftJoin('table3 t3', 't2.id = t3.table2_id')
+    ->where(/* Your filter conditions */);
+
+// Execute the query and get the data
+$dataProvider = new \yii\data\ActiveDataProvider([
+    'query' => $query,
+    'pagination' => [
+        'pageSize' => 10, // Number of items per page
+    ],
+    'totalCount' => $countQuery->count(),
+]);
+
+// Display the data in the grid
+echo \yii\grid\GridView::widget([
+    'dataProvider' => $dataProvider,
+    'columns' => [
+        'column1',
+        'column2',
+        // Add more columns as needed
+        'row_count',
+    ],
+]);
+
+
+use yii\db\Expression;
+
+$query = Table1::find()
+    ->joinWith(['table2', 'table2.table3'])
+    ->select([
+        'Table1.*',
+        'COUNT(Table3.id) AS table3_count',
+    ])
+    ->groupBy('Table1.id')
+    ->andFilterWhere(['like', 'Table1.attribute', $searchTerm]);
+
+$results = $query->all();
