@@ -169,11 +169,6 @@ class VideoController extends Controller
         if ($this->request->isPost) {
             if ($model->load($this->request->post()) && $model->save()) {
 
-                // $model->checkboxes
-                // && $model->save()
-              //  $postData =   $this->request->post();
-               // var_dump($postData); // Debug the POST data
-               // die('Stop code');
 
                 return $this->redirect(['view', 'id' => $model->id]);
             }
