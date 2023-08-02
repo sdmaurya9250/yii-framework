@@ -21,7 +21,8 @@ class Video extends \yii\db\ActiveRecord
     const STATUS_SELECTED = 2;
     const STATUS_REJECTED = 1;
 
-    // public $checkboxes;
+    // public $name;
+    // public $total_fees;
 
     // public static $details = [
     //     self::MY_CONSTANT => 'Hey This is me',
@@ -32,7 +33,7 @@ class Video extends \yii\db\ActiveRecord
      * {@inheritdoc}
      */
 
-     public $checkboxValues ;
+     public $checkboxValues ;public $check;
     public static function tableName()
     {
         return 'videos';

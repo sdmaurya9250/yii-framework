@@ -24,11 +24,7 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'title')->textInput(['maxlength' => true]) ?>
     <?= $form->field($model, 'description')->textarea(['rows' => 6]) ?>
-    <?= $form->field($model, 'checkboxValues')->checkboxList([
-    'option1' => 'Option 1',
-    'option2' => 'Option 2',
-    'option3' => 'Option 3',
-]); ?>
+    <?= $form->field($model, 'check')->checkbox(['label' => 'Custom Label', 'class' => 'custom-class']); ?>
     <div class="form-group">
         <?=Html::submitButton('Submit', ['class' => 'btn btn-primary', 'id' => 'submit-button']); ?>
     </div>

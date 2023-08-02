@@ -3,6 +3,7 @@
 namespace backend\controllers;
 
 use common\models\Video;
+use common\models\Course;
 use common\models\VideoSearch;
 use yii\data\ActiveDataProvider;
 use yii\web\Controller;
@@ -162,24 +163,55 @@ class VideoController extends Controller
         
     }
     
-    public function actionCreate()
+    public function actionSmsTest()
     {
-        $model = new Video();
 
-        if ($this->request->isPost) {
-            if ($model->load($this->request->post()) && $model->save()) {
+        return 'Hii';
 
+    }
+    public function actionCreate()
+{
+    $model = new Video();
 
-                return $this->redirect(['view', 'id' => $model->id]);
+    if ($this->request->isPost && $model->load($this->request->post())) {
+        if ($this->request->post('Video')['check'] == 1) {
+
+            $course = new Course();
+                $course->name = 'fdsfds';
+                $course->total_fees = '11222';
+                $result = $course->save();
+            
+                if ($result) {
+                    $course->user_id = 'T00' . $course->id;
+                    $course->save(false); // Save the updated user_id without running validation again
+                // If the course is saved successfully, you can redirect to the video view page
+                return 'Success';
+            } else {
+                // If there is an error while saving the course, you can show an error message
+                // or handle the error accordingly
+                return 'Course model saving error: ' . print_r($course->errors, true);
             }
         } else {
-            $model->loadDefaultValues();
+            // The 'check' value is not 1, so return 0 or handle the condition accordingly
+            return 0;
         }
-
-        return $this->render('create', [
-            'model' => $model,
-        ]);
     }
+
+    // If it's not a POST request or the model is not loaded, just render the create view
+    return $this->render('create', [
+        'model' => $model,
+    ]);
+}
+// In this refactored code, we use $model->check to access the 'check' attribute of the Video model. We also moved the redirection code outside the if block to ensure the redirection happens regardless of the condition's outcome. If the Course model is not saved successfully, you can show an error message or handle the error according to your requirements.
+
+
+
+
+
+
+    
+    
+    
 
     /**
      * Updates an existing Video model.
